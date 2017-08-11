@@ -5,9 +5,18 @@
   </Configs>
   <NewExtensions/>
   <sounds name="sound"/>
-  <sprites name="sprites"/>
+  <sprites name="sprites">
+    <sprite>sprites\sprBearIdle</sprite>
+    <sprite>sprites\sprBearWalk</sprite>
+  </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <objects name="objects">
+    <object>objects\objBear</object>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\rmTest</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
