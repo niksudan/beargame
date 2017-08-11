@@ -1,3 +1,3 @@
-![](https://github.com/niksudan/beargame/blob/master/Media/thumbnail.png?raw=true)
+![](https://raw.githubusercontent.com/niksudan/beargame/master/Media/header.png)
 
-This is a game about a bear.
+<p align="center">This is a game about a bear.</p>
