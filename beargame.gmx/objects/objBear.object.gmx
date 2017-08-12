@@ -65,7 +65,7 @@ image_speed = 0.2;
         destination = mouse_x;
         didReachDest = false;
         spriteDirection = 1;
-        if (mouse_x &lt; x) {
+        if (destination &lt; x) {
             spriteDirection = -1;
         }
     }
@@ -73,6 +73,7 @@ image_speed = 0.2;
     // Check if at destination
     if (!didReachDest) {
         distanceToDest = abs(destination - x);
+        image_xscale = spriteDirection;
         if (distanceToDest &lt;= destRadius) {
             didReachDest = true;
             sprite_index = sprBearIdle;
@@ -81,7 +82,6 @@ image_speed = 0.2;
             if (sprite_index == sprBearIdle) {
                 image_index = 0;
                 sprite_index = sprBearWalk;
-                image_xscale = spriteDirection;
             }
         }
     }
