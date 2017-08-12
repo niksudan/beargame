@@ -29,13 +29,15 @@
 
 state = 0;
 didClick = false;
+clickZones = ds_list_create();
 
 bearX = 0;
 bearDestination = 0;
 bearSpriteDirection = 1;
 
 didClickLogoAway = false;
-
+arrowBobTimer = 0;
+currentPhraseLength = 0;
 </string>
           </argument>
         </arguments>
@@ -84,31 +86,11 @@ didClick = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Handle states
+            <string>/// Define states
 
-switch (state) {
+define_positioning();
+define_scenes();
 
-    // Cave (start of game)
-    case 0:
-        handle_state(rm1_Cave, 16, 1);
-        if (didClick &amp;&amp; !didClickLogoAway) {
-            didClickLogoAway = true;
-        }
-        break;
-        
-    // Cave (re-entering)
-    case 1:
-        handle_state(rm1_Cave, 144, -1, 112);
-        break;
-        
-    // Forest (cave exit)
-    case 2:
-        break;
-        
-    // Forest (right)
-    case 3:
-        break;
-}
 </string>
           </argument>
         </arguments>
@@ -136,6 +118,7 @@ switch (state) {
 didClick = true;
 instance_create(mouse_x, mouse_y, objClick);
 alarm[0] = 1;
+
 </string>
           </argument>
         </arguments>
@@ -168,12 +151,44 @@ switch (state) {
         draw_sprite(sprCaveFront, 0, 0, 0);
         if (state == 0 &amp;&amp; !didClickLogoAway) {
             draw_sprite(sprLogo, 0, 64, 36);
+            if (didClick) {
+                didClickLogoAway = true;
+            }
         }
         break;
         
 }
 
+// Phrases
+if (instance_exists(objBear)) {
+    if (objBear.showPhrases) {
+        currentPhrase = ds_list_find_value(objBear.phrases, objBear.phraseIndex);
+        if (currentPhraseLength &lt; string_length(currentPhrase)) {
+            currentPhraseLength += 0.5;
+        }
+    
+        draw_set_alpha(1);
+        draw_set_color(c_black);
+        draw_rectangle(0, 0, 128, 14, false);
+        
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_center);
+        draw_set_color(c_white);
+        draw_set_font(fntMain);
+        draw_text_transformed(2.5, 6, string_copy(currentPhrase, 0, ceil(currentPhraseLength)), 0.5, 0.5, 0);
+        
+        arrowBobTimer += 0.05;
+        var arrowOffset = 10;
+        if (arrowBobTimer mod 2 &gt;= 1) {
+            arrowOffset = 11;
+        }
+        draw_sprite(sprArrow, 0, 125, arrowOffset);
+    }
+}
+
+// Cursor
 draw_sprite(sprCursor, 0, mouse_x, mouse_y);
+
 </string>
           </argument>
         </arguments>

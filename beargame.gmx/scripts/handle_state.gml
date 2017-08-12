@@ -2,6 +2,7 @@
 
 if (room != argument[0]) {
     room_goto(argument[0]);
+    clickZones = ds_list_create();
     
     bearX = argument[1];
     bearDestination = argument[1];

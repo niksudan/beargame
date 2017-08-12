@@ -28,13 +28,19 @@
             <string>/// Local variables
 
 isActive = true;
+didClickZone = false;
+
 destination = 0;
 didReachDest = true;
-spriteDirection = 1;
 destRadius = 4;
-moveSpeed = 0.5;
-image_speed = 0.15;
 
+spriteDirection = 1;
+image_speed = 0.15;
+moveSpeed = 0.5;
+
+phrases = ds_list_create();
+phraseIndex = 0;
+showPhrases = false;
 
 </string>
           </argument>
@@ -72,7 +78,7 @@ if (controller.bearDestination != x) {
         </arguments>
       </action>
     </event>
-    <event eventtype="3" enumb="2">
+    <event eventtype="3" enumb="1">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -91,30 +97,133 @@ if (controller.bearDestination != x) {
             <kind>1</kind>
             <string>/// Handle movement
 
+// Listen for a new destination
 if (isActive) {
-    
-    // Listen for a new destination
     if (controller.didClick) {
         set_destination(mouse_x);
     }
+}
 
-    // Check if at destination
-    if (!didReachDest) {
-        distanceToDest = abs(destination - x);
-        image_xscale = spriteDirection;
-        if (distanceToDest &lt;= destRadius) {
-            didReachDest = true;
-            sprite_index = sprBearIdle;
-        } else {
-            x += spriteDirection * moveSpeed;
-            if (sprite_index == sprBearIdle) {
-                image_index = 0;
-                sprite_index = sprBearWalk;
-            }
+// Check if at destination
+if (!didReachDest) {
+    var distanceToDest = abs(destination - x);
+    image_xscale = spriteDirection;
+    if (distanceToDest &lt;= destRadius) {
+        didReachDest = true;
+        sprite_index = sprBearIdle;
+    } else {
+        x += spriteDirection * moveSpeed;
+        if (sprite_index == sprBearIdle) {
+            image_index = 0;
+            sprite_index = sprBearWalk;
         }
     }
-
 }
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Handle dialogue
+
+// Trigger phrases when destination has been reached
+if (didReachDest &amp;&amp; didClickZone) {
+    didClickZone = false;
+    showPhrases = true;
+    with (objQuestion) {
+        instance_destroy();
+    }
+    show_debug_message('Triggering dialogue');
+}
+
+// Trigger progression of phrases
+if (showPhrases &amp;&amp; !isActive) {
+    var phraseCount = ds_list_size(phrases);
+    if (controller.didClick) {
+        phraseIndex += 1;
+        controller.currentPhraseLength = 0;
+        show_debug_message('Currently on ' + string(phraseIndex + 1) + ' of ' + string(phraseCount + 1));
+        if (phraseIndex &gt;= phraseCount) {
+            show_debug_message('Finished dialogue');
+            isActive = true;
+            showPhrases = false;
+            clear_phrases();
+            exit;
+        }
+    }
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Handle click zones
+
+if (isActive &amp;&amp; controller.didClick) {
+
+    // Reset phrases
+    clear_phrases();
+
+    // Cycle through click zones to see if you've clicked on one
+    // Note: If we hit two zones, we only handle the first
+    didClickZone = false;
+    var zones = controller.clickZones;
+    var zoneCount = ds_list_size(zones);
+    var zoneIndex = 0;
+    while (zoneIndex &lt; zoneCount &amp;&amp; !didClickZone) {
+        var zone = ds_list_find_value(zones, zoneIndex);
+        if (
+            mouse_x &gt;= zone[0] &amp;&amp;
+            mouse_y &gt;= zone[1] &amp;&amp;
+            mouse_x &lt;= zone[2] &amp;&amp;
+            mouse_y &lt;= zone[3]
+        ) {
+            // Set the click zone to be the current one
+            phrases = zone[4];
+            phraseIndex = 0;
+            didClickZone = true;
+            isActive = false;
+            instance_create(mouse_x, mouse_y, objQuestion);
+            show_debug_message('Clicked on an interactable object');
+        } else {
+            zoneIndex += 1;
+        }
+    }
+    
+}
+
 </string>
           </argument>
         </arguments>

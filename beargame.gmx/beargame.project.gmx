@@ -6,26 +6,38 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
+    <sprite>sprites\sprArrow</sprite>
     <sprite>sprites\sprBearIdle</sprite>
     <sprite>sprites\sprBearWalk</sprite>
     <sprite>sprites\sprCaveFront</sprite>
     <sprite>sprites\sprClick</sprite>
     <sprite>sprites\sprCursor</sprite>
     <sprite>sprites\sprLogo</sprite>
+    <sprite>sprites\sprQuestion</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bgCaveBack</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\handle_state.gml</script>
-    <script>scripts\set_destination.gml</script>
-    <script>scripts\set_state.gml</script>
+    <script>scripts\define_positioning.gml</script>
+    <script>scripts\define_scenes.gml</script>
+    <scripts name="Internal">
+      <script>scripts\add_click_zone.gml</script>
+      <script>scripts\clear_phrases.gml</script>
+      <script>scripts\handle_state.gml</script>
+      <script>scripts\set_destination.gml</script>
+      <script>scripts\set_state.gml</script>
+    </scripts>
   </scripts>
+  <fonts name="fonts">
+    <font>fonts\fntMain</font>
+  </fonts>
   <objects name="objects">
     <object>objects\controller</object>
     <object>objects\objBear</object>
     <object>objects\objClick</object>
+    <object>objects\objQuestion</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm0_Init</room>
