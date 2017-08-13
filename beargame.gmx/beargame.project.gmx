@@ -9,6 +9,7 @@
     <sprite>sprites\sprArrow</sprite>
     <sprite>sprites\sprBearIdle</sprite>
     <sprite>sprites\sprBearWalk</sprite>
+    <sprite>sprites\sprCaveExitFront</sprite>
     <sprite>sprites\sprCaveFront</sprite>
     <sprite>sprites\sprClick</sprite>
     <sprite>sprites\sprCursor</sprite>
@@ -19,6 +20,7 @@
   <backgrounds name="background">
     <background>background\bgBlue</background>
     <background>background\bgCave</background>
+    <background>background\bgCaveExit</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">

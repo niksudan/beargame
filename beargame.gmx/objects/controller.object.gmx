@@ -164,12 +164,20 @@ if (instance_exists(objBear)) {
             draw_set_alpha(1);
             draw_set_color(c_black);
             draw_rectangle(0, 0, 128, 14, false);
+            draw_set_color(c_white);
+            
+            var actualPhrase = string_copy(currentPhrase, 0, ceil(currentPhraseLength));
+            var isGreyText = string_char_at(currentPhrase, 0) == '&amp;';
+            
+            if (isGreyText) {
+                draw_set_color(make_color_rgb(132, 126, 135));
+                actualPhrase = string_replace(actualPhrase, '&amp;', '');
+            }
             
             draw_set_halign(fa_left);
             draw_set_valign(fa_center);
-            draw_set_color(c_white);
             draw_set_font(fntMain);
-            draw_text_transformed(2.5, 6, string_copy(currentPhrase, 0, ceil(currentPhraseLength)), 0.5, 0.5, 0);
+            draw_text_transformed(2.5, 6, actualPhrase, 0.5, 0.5, 0);
             
             arrowBobTimer += 0.05;
             var arrowOffset = 10;

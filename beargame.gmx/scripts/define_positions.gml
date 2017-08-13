@@ -19,7 +19,7 @@ switch (state) {
         
     // Cave exit (from cave)
     case 3:
-        handle_state(rmCaveExit, -16, 1, 16);
+        handle_state(rmCaveExit, 16, 1, 32);
         break;
         
     // Cave exit (from tree)

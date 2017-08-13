@@ -1,6 +1,7 @@
 /// handle_state(room, position, direction, destination?)
 
 if (room != argument[0]) {
+    set_cursor(sprCursor, 0);
 
     // Clean and tidy :)
     if (instance_exists(objBear)) {

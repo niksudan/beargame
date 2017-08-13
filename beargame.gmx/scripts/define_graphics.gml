@@ -13,5 +13,11 @@ switch (state) {
         draw_sprite(sprCaveFront, 0, 0, 0);
         break;
         
+    // Cave Exit
+    case 3:
+    case 4:
+        draw_sprite(sprCaveExitFront, 0, 0, 0);
+        break;
+        
 }
 
