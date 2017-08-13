@@ -12,22 +12,28 @@
     <sprite>sprites\sprCaveFront</sprite>
     <sprite>sprites\sprClick</sprite>
     <sprite>sprites\sprCursor</sprite>
+    <sprite>sprites\sprDialogueArrow</sprite>
     <sprite>sprites\sprLogo</sprite>
     <sprite>sprites\sprQuestion</sprite>
   </sprites>
   <backgrounds name="background">
-    <background>background\bgCaveBack</background>
+    <background>background\bgBlue</background>
+    <background>background\bgCave</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\define_positioning.gml</script>
-    <script>scripts\define_scenes.gml</script>
+    <script>scripts\define_content.gml</script>
+    <script>scripts\define_graphics.gml</script>
+    <script>scripts\define_positions.gml</script>
     <scripts name="Internal">
       <script>scripts\add_click_zone.gml</script>
-      <script>scripts\clear_phrases.gml</script>
+      <script>scripts\add_transition_zone.gml</script>
+      <script>scripts\click_zone.gml</script>
       <script>scripts\handle_state.gml</script>
+      <script>scripts\set_cursor.gml</script>
       <script>scripts\set_destination.gml</script>
       <script>scripts\set_state.gml</script>
+      <script>scripts\within_bounds.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">
@@ -36,12 +42,16 @@
   <objects name="objects">
     <object>objects\controller</object>
     <object>objects\objBear</object>
-    <object>objects\objClick</object>
-    <object>objects\objQuestion</object>
+    <objects name="Effects">
+      <object>objects\objClick</object>
+      <object>objects\objQuestion</object>
+    </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm0_Init</room>
-    <room>rooms\rm1_Cave</room>
+    <room>rooms\rmInit</room>
+    <room>rooms\rmBlue</room>
+    <room>rooms\rmCave</room>
+    <room>rooms\rmCaveExit</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

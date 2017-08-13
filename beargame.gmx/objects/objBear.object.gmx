@@ -27,20 +27,46 @@
             <kind>1</kind>
             <string>/// Local variables
 
+// Whether the bear can be controlled
+// If set to false, the bear will no longer respond to new destinations
+// However it will still move towards any existing one
 isActive = true;
+
+// The new destination the bear will want to go to
+destination = 0;
+
+// Whether or not the bear has reached its destination
+didReachDest = true;
+
+// The maximum distance away from the destination the bear has to be in order for it to be marked as 'reached'
+destRadius = 4;
+
+// Whether or not a zone was clicked
+// This is set to false when the transition occurs or the dialogue spawns
 didClickZone = false;
 
-destination = 0;
-didReachDest = true;
-destRadius = 4;
+// Whether the currently clicked zone is a transition zone
+zoneIsTransition = false;
+
+// The state in which the bear should travel to
+// This is only put into affect when the destination has been reached
+transitionState = 0;
+
+// The list of phrases the dialogue will go through
+phrases = ds_list_create();
+
+// The current index of dialogue the bear is currently on
+phraseIndex = 0;
+
+// Whether or not the dialogue should be shown
+showPhrases = false;
 
 spriteDirection = 1;
 image_speed = 0.15;
 moveSpeed = 0.5;
 
-phrases = ds_list_create();
-phraseIndex = 0;
-showPhrases = false;
+mouseBeforeX = mouse_x;
+mouseBeforeY = mouse_y;
 
 </string>
           </argument>
@@ -62,15 +88,14 @@ showPhrases = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// State handling
+            <string>/// Positioning handling
 
 x = controller.bearX;
 spriteDirection = controller.bearSpriteDirection;
-show_debug_message('Bear spawned at ' + string(x));
+show_debug_message('Bear spawned at position ' + string(x));
 
 if (controller.bearDestination != x) {
     set_destination(controller.bearDestination);
-    show_debug_message('Bear will travel to ' + string(destination));
 }
 
 </string>
@@ -140,16 +165,21 @@ if (!didReachDest) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Handle dialogue
+            <string>/// Handle dialogue and transitions
 
-// Trigger phrases when destination has been reached
+// Trigger phrases/transition when destination has been reached
 if (didReachDest &amp;&amp; didClickZone) {
     didClickZone = false;
-    showPhrases = true;
-    with (objQuestion) {
-        instance_destroy();
+    if (!zoneIsTransition) {
+        showPhrases = true;
+        with (objQuestion) {
+            instance_destroy();
+        }
+        show_debug_message('Triggering dialogue');
+    } else {
+        set_state(transitionState);
+        show_debug_message('Transitioning to state ' + string(transitionState));
     }
-    show_debug_message('Triggering dialogue');
 }
 
 // Trigger progression of phrases
@@ -158,12 +188,10 @@ if (showPhrases &amp;&amp; !isActive) {
     if (controller.didClick) {
         phraseIndex += 1;
         controller.currentPhraseLength = 0;
-        show_debug_message('Currently on ' + string(phraseIndex + 1) + ' of ' + string(phraseCount + 1));
+        show_debug_message(string(phraseIndex) + ' of ' + string(phraseCount) + ' completed');
         if (phraseIndex &gt;= phraseCount) {
-            show_debug_message('Finished dialogue');
             isActive = true;
             showPhrases = false;
-            clear_phrases();
             exit;
         }
     }
@@ -192,37 +220,66 @@ if (showPhrases &amp;&amp; !isActive) {
             <string>/// Handle click zones
 
 if (isActive &amp;&amp; controller.didClick) {
-
-    // Reset phrases
-    clear_phrases();
-
-    // Cycle through click zones to see if you've clicked on one
-    // Note: If we hit two zones, we only handle the first
-    didClickZone = false;
-    var zones = controller.clickZones;
-    var zoneCount = ds_list_size(zones);
-    var zoneIndex = 0;
-    while (zoneIndex &lt; zoneCount &amp;&amp; !didClickZone) {
-        var zone = ds_list_find_value(zones, zoneIndex);
-        if (
-            mouse_x &gt;= zone[0] &amp;&amp;
-            mouse_y &gt;= zone[1] &amp;&amp;
-            mouse_x &lt;= zone[2] &amp;&amp;
-            mouse_y &lt;= zone[3]
-        ) {
-            // Set the click zone to be the current one
+    for (var i = 0; i &lt; ds_list_size(controller.clickZones); i += 1) {
+        var zone = ds_list_find_value(controller.clickZones, i);
+        if (within_bounds(mouse_x, mouse_y, zone[0], zone[1], zone[2], zone[3])) {
+            click_zone(false);
             phrases = zone[4];
-            phraseIndex = 0;
-            didClickZone = true;
-            isActive = false;
-            instance_create(mouse_x, mouse_y, objQuestion);
-            show_debug_message('Clicked on an interactable object');
-        } else {
-            zoneIndex += 1;
+            break;
         }
     }
-    
 }
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Handle transition zones
+
+// Only perform this logic if the mouse position has changed since the last check
+if (mouseBeforeX != mouse_x || mouseBeforeY != mouse_y) {
+    set_cursor(sprCursor, 0);
+    
+    if (!didClickZone) {
+        transitionState = 0;
+    }
+    
+    for (var i = 0; i &lt; ds_list_size(controller.transitionZones); i += 1) {
+        var zone = ds_list_find_value(controller.transitionZones, i);
+        if (within_bounds(mouse_x, mouse_y, zone[0], zone[1], zone[2], zone[3])) {
+            set_cursor(sprArrow, zone[5]);
+            if (!didClickZone) {
+                transitionState = zone[4];
+            }
+            break;
+        }
+    }
+}
+
+// Activate transitioning if clicked on the zone
+if (isActive &amp;&amp; controller.didClick &amp;&amp; transitionState != 0) {
+    click_zone(true);
+}
+
+// Update the mouse position
+mouseBeforeX = mouse_x;
+mouseBeforeY = mouse_y;
 
 </string>
           </argument>
