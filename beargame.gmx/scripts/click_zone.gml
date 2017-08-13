@@ -11,3 +11,4 @@ if (zoneIsTransition) {
     instance_create(mouse_x, mouse_y, objQuestion);
     show_debug_message('Clicked on an interactable object');
 }
+

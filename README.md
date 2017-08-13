@@ -4,7 +4,6 @@
 
 ## Credits
 
-- *pixelFJ8pt1 Font* - flashjunior
+- *Pixelated Font* - Greenma201
 - *Aseprite* - David Capello
 - *GameMaker Studio* - YoYo Games
-

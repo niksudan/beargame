@@ -1,4 +1,4 @@
-/// add_click_zone(x1, y1, x2, y2, phrases)
+/// add_click_zone(x1, y1, x2, y2, content)
 
 var zone;
 

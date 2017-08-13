@@ -13,10 +13,16 @@ switch (state) {
         draw_sprite(sprCaveFront, 0, 0, 0);
         break;
         
-    // Cave Exit
+    // CaveExit
     case 3:
     case 4:
         draw_sprite(sprCaveExitFront, 0, 0, 0);
+        break;
+        
+    // BigTree
+    case 5:
+    case 6:
+        draw_sprite(sprBigTreeFront, 0, 0, 0);
         break;
         
 }

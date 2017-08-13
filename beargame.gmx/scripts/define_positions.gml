@@ -17,14 +17,25 @@ switch (state) {
         handle_state(rmCave, 144, -1, 112);
         break;
         
-    // Cave exit (from cave)
+    // CaveExit (from Cave)
     case 3:
         handle_state(rmCaveExit, 16, 1, 32);
         break;
         
-    // Cave exit (from tree)
+    // CaveExit (from BigTree)
     case 4:
         handle_state(rmCaveExit, 144, -1, 112);
         break;
+        
+    // BigTree (from CaveExit)
+    case 5:
+        handle_state(rmBigTree, -16, 1, 16);
+        break;
+    
+    // BigTree (from ...)
+    case 6:
+        handle_state(rmBigTree, 144, -1, 112);
+        break;
+        
 }
 

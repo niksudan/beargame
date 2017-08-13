@@ -6,20 +6,38 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\sprArrow</sprite>
-    <sprite>sprites\sprBearIdle</sprite>
-    <sprite>sprites\sprBearWalk</sprite>
-    <sprite>sprites\sprCaveExitFront</sprite>
-    <sprite>sprites\sprCaveFront</sprite>
-    <sprite>sprites\sprClick</sprite>
-    <sprite>sprites\sprCursor</sprite>
-    <sprite>sprites\sprDialogueArrow</sprite>
-    <sprite>sprites\sprLogo</sprite>
-    <sprite>sprites\sprQuestion</sprite>
+    <sprites name="Bear">
+      <sprite>sprites\sprBearAttack</sprite>
+      <sprite>sprites\sprBearIdle</sprite>
+      <sprite>sprites\sprBearWalk</sprite>
+      <sprite>sprites\sprGlassesAttack</sprite>
+      <sprite>sprites\sprGlassesIdle</sprite>
+      <sprite>sprites\sprGlassesWalk</sprite>
+    </sprites>
+    <sprites name="BigTree">
+      <sprite>sprites\sprBigTreeFall</sprite>
+      <sprite>sprites\sprBigTreeFallen</sprite>
+      <sprite>sprites\sprBigTreeIdle</sprite>
+      <sprite>sprites\sprBigTreeShake</sprite>
+    </sprites>
+    <sprites name="Foregrounds">
+      <sprite>sprites\sprBigTreeFront</sprite>
+      <sprite>sprites\sprCaveExitFront</sprite>
+      <sprite>sprites\sprCaveFront</sprite>
+    </sprites>
+    <sprites name="UI">
+      <sprite>sprites\sprArrow</sprite>
+      <sprite>sprites\sprClick</sprite>
+      <sprite>sprites\sprCursor</sprite>
+      <sprite>sprites\sprDialogueArrow</sprite>
+      <sprite>sprites\sprLogo</sprite>
+      <sprite>sprites\sprQuestion</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\bgBlue</background>
     <background>background\bgCave</background>
+    <background>background\bgBigTree</background>
     <background>background\bgCaveExit</background>
   </backgrounds>
   <paths name="paths"/>
@@ -29,6 +47,7 @@
     <script>scripts\define_positions.gml</script>
     <scripts name="Internal">
       <script>scripts\add_click_zone.gml</script>
+      <script>scripts\edit_click_zone.gml</script>
       <script>scripts\add_transition_zone.gml</script>
       <script>scripts\click_zone.gml</script>
       <script>scripts\handle_state.gml</script>
@@ -36,6 +55,12 @@
       <script>scripts\set_destination.gml</script>
       <script>scripts\set_state.gml</script>
       <script>scripts\within_bounds.gml</script>
+      <script>scripts\activate_bear.gml</script>
+    </scripts>
+    <scripts name="Triggers">
+      <script>scripts\trigger_bag_fall.gml</script>
+      <script>scripts\trigger_collect_coins.gml</script>
+      <script>scripts\trigger_collect_glasses.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">
@@ -44,6 +69,7 @@
   <objects name="objects">
     <object>objects\controller</object>
     <object>objects\objBear</object>
+    <object>objects\objBigTree</object>
     <objects name="Effects">
       <object>objects\objClick</object>
       <object>objects\objQuestion</object>
@@ -54,6 +80,7 @@
     <room>rooms\rmBlue</room>
     <room>rooms\rmCave</room>
     <room>rooms\rmCaveExit</room>
+    <room>rooms\rmBigTree</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

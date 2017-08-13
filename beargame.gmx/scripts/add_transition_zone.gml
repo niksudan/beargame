@@ -10,5 +10,4 @@ zone[4] = argument[4];
 zone[5] = argument[5];
 
 ds_list_add(controller.transitionZones, zone);
-show_debug_message('Added a transition zone to state ' + string(zone[4]));
 

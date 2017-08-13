@@ -41,9 +41,36 @@ bearSpriteDirection = 1;
 cursorSprite = sprCursor;
 cursorAngle = 0;
 
-didClickLogoAway = false;
 arrowBobTimer = 0;
 currentPhraseLength = 0;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Level progression
+
+didClickLogoAway = false;
+didWhackTree = false;
+didBagFall = false;
+didCollectCoins = false;
+didCollectGlasses = false;
 
 </string>
           </argument>
@@ -163,7 +190,7 @@ if (instance_exists(objBear)) {
         
             draw_set_alpha(1);
             draw_set_color(c_black);
-            draw_rectangle(0, 0, 128, 14, false);
+            draw_rectangle(0, 0, 128, 12, false);
             draw_set_color(c_white);
             
             var actualPhrase = string_copy(currentPhrase, 0, ceil(currentPhraseLength));
@@ -177,7 +204,7 @@ if (instance_exists(objBear)) {
             draw_set_halign(fa_left);
             draw_set_valign(fa_center);
             draw_set_font(fntMain);
-            draw_text_transformed(2.5, 6, actualPhrase, 0.5, 0.5, 0);
+            draw_text_transformed(4, 6.5, actualPhrase, 0.5, 0.5, 0);
             
             arrowBobTimer += 0.05;
             var arrowOffset = 10;
